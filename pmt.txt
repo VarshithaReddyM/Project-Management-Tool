@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Project Management Tool</title>
+<style>
+
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f5f9;
+    margin: 0;
+    padding: 0;
+  }
+
+  #header {
+    background-color: #3498db;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+  }
+
+  #main-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  h2 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  label {
+    font-weight: bold;
+    color: #333;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  select[multiple] {
+    height: auto;
+  }
+
+  button {
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #2980b9;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    padding: 15px;
+    background-color: #f7f9fc;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .delete-btn {
+    background-color: #e74c3c;
+  }
+
+  .delete-btn:hover {
+    background-color: #c0392b;
+  }
+
+  #communication-container {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  #communication-container h2 {
+    color: #333;
+  }
+
+  #communication-container select,
+  #communication-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  #communication-container button {
+    background-color: #27ae60;
+  }
+
+  #communication-container button:hover {
+    background-color: #219851;
+  }
+</style>
+</head>
+<body>
+  <div id="header">
+    <h1>Project Management Tool</h1>
+  </div>
+
+  <div id="main-content">
+    <h2>Task List</h2>
+    <ul id="task-list"></ul>
+    <input type="text" id="task-input" placeholder="Add a new task">
+    <select id="assignee-select" multiple>
+      <option value="user1">user 1</option>
+      <option value="user2">user 2</option>
+      <option value="user3">user 3</option>
+    </select>
+    <input type="date" id="due-date-input">
+    <select id="priority-select">
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+    <select id="status-select">
+      <option value="todo">To Do</option>
+      <option value="inprogress">In Progress</option>
+      <option value="done">Done</option>
+    </select>
+    <button id="add-task-btn">Add Task</button>
+    
+    <!-- File Submission Section -->
+    <div id="file-submission-container">
+      <h2>File Submission</h2>
+      <input type="file" id="file-input">
+      <button id="submit-file-btn">Submit File</button>
+    </div>
+  </div>
+
+  <div id="communication-container">
+    <h2>Communication</h2>
+    <select id="users-select">
+      <option value="user1">user 1</option>
+      <option value="user2">user 2</option>
+      <option value="user3">user 3</option>
+    </select>
+    <textarea id="message-input" placeholder="Type your message"></textarea>
+    <button id="send-message-btn">Send</button>
+  </div>
+
+  <script>
+    const taskInput = document.getElementById("task-input");
+    const addTaskBtn = document.getElementById("add-task-btn");
+    const taskList = document.getElementById("task-list");
+    const usersSelect = document.getElementById("users-select");
+    const messageInput = document.getElementById("message-input");
+    const sendMessageBtn = document.getElementById("send-message-btn");
+    const communicationContainer = document.getElementById("communication-container");
+    const fileInput = document.getElementById("file-input");
+    const submitFileBtn = document.getElementById("submit-file-btn");
+    const fileSubmissionContainer = document.getElementById("file-submission-container");
+
+    function addTask() {
+      // ... (existing code for adding tasks)
+      const taskText = taskInput.value;
+      const assigneeSelect = document.getElementById("assignee-select");
+      const dueDateInput = document.getElementById("due-date-input");
+      const prioritySelect = document.getElementById("priority-select");
+      const statusSelect = document.getElementById("status-select");
+      const assignees = Array.from(assigneeSelect.selectedOptions).map(option => option.value);
+      const dueDate = dueDateInput.value;
+      const priority = prioritySelect.value;
+      const status = statusSelect.value;
+
+      if (taskText.trim() !== "" && assignees.length > 0) {
+        const taskItem = document.createElement("li");
+        taskItem.innerHTML = `
+        <span>${taskText}</span>
+        <span>Assignees: ${assignees.join(", ")}</span>
+        <span>Due Date: ${dueDate}</span>
+        <span>Priority: ${priority}</span>
+        <span>Status: ${status}</span>
+        <button class="delete-btn">Delete</button>
+        `;
+
+        const deleteBtn = taskItem.querySelector(".delete-btn");
+        deleteBtn.addEventListener("click", function () {
+          taskItem.remove();
+        });
+
+        taskList.appendChild(taskItem);
+        taskInput.value = "";
+      }
+    }
+
+    function sendMessage() {
+      // ... (existing code for sending messages)
+      const selectedUser = usersSelect.value;
+      const message = messageInput.value;
+
+      if (message.trim() !== "") {
+        const messageContainer = document.createElement("div");
+        messageContainer.innerHTML = `<strong>${selectedUser}:</strong> ${message}`;
+        communicationContainer.appendChild(messageContainer);
+        messageInput.value = "";
+      }
+    }
+
+    function submitFile() {
+      const selectedFile = fileInput.files[0];
+
+      if (selectedFile) {
+        const fileItem = document.createElement("div");
+        fileItem.innerHTML = `<strong>File Submitted:</strong> ${selectedFile.name}`;
+        fileSubmissionContainer.appendChild(fileItem);
+        fileInput.value = null;
+      }
+    }
+
+    addTaskBtn.addEventListener("click", addTask);
+    sendMessageBtn.addEventListener("click", sendMessage);
+    submitFileBtn.addEventListener("click", submitFile);
+
+    messageInput.addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
